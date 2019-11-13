@@ -75,19 +75,15 @@ def selection(population_ranked, elite_size):
 
     for i in range(len(population_ranked) - elite_size):
         pick = 100 * random.random()
-        for i in range(len(population_ranked)):
-            if pick <= df.iat[i, 3]:
-                selection_results.append(population_ranked[i][0])
-                break
+        satisfying = df[df['cum_perc'] >= pick]
+        picked_idx = int(satisfying['Index'].iloc[0])
+        selection_results.append(picked_idx)
 
     return selection_results
 
 
 def mating_pool(population, selection_results):
-    pool = []
-    for i in range(len(selection_results)):
-        idx = selection_results[i]
-        pool.append(population[idx])
+    pool = [population[idx] for idx in selection_results]
     return pool
 
 
